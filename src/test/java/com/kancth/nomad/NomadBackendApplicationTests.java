@@ -1,4 +1,4 @@
-package com.kancth.nomadbackend;
+package com.kancth.nomad;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
