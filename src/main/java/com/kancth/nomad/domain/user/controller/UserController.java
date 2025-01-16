@@ -18,9 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    // TODO: Response Body DTO로 변경
-    public ResponseEntity<User> signUp(@RequestBody SignUpRequest request) {
+    public ResponseEntity<User.Response> signUp(@RequestBody SignUpRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(userService.signUp(request));
+                            .body(userService.signUp(request).response());
     }
 }
