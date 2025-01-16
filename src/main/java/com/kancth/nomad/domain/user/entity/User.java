@@ -51,6 +51,7 @@ public class User extends BaseEntity {
         return Response.builder()
                 .id(this.getId())
                 .email(this.getEmail())
+                .name(this.getName())
                 .nickname(this.getNickname())
                 .loginId(this.getLoginId())
                 .password(this.getPassword())
@@ -64,6 +65,7 @@ public class User extends BaseEntity {
     public record Response (
             Long id,
             String email,
+            String name,
             String nickname,
             String loginId,
             String password,
