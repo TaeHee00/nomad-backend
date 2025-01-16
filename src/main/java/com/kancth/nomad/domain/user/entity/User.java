@@ -5,14 +5,18 @@ import com.kancth.nomad.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
@@ -42,4 +46,29 @@ public class User extends BaseEntity {
                 .verified(false)
                 .build();
     }
+
+    public User.Response response() {
+        return Response.builder()
+                .id(this.getId())
+                .email(this.getEmail())
+                .nickname(this.getNickname())
+                .loginId(this.getLoginId())
+                .password(this.getPassword())
+                .verified(this.isVerified())
+                .createdAt(this.getCreatedAt())
+                .updatedAt(this.getUpdatedAt())
+                .build();
+    }
+
+    @Builder
+    public record Response (
+            Long id,
+            String email,
+            String nickname,
+            String loginId,
+            String password,
+            boolean verified,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {}
 }
