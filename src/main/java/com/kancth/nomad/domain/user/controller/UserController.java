@@ -3,6 +3,7 @@ package com.kancth.nomad.domain.user.controller;
 import com.kancth.nomad.domain.user.dto.SignUpRequest;
 import com.kancth.nomad.domain.user.entity.User;
 import com.kancth.nomad.domain.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User.Response> signUp(@RequestBody SignUpRequest request) {
+    public ResponseEntity<User.Response> signUp(@RequestBody @Valid SignUpRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                             .body(userService.signUp(request).response());
     }
