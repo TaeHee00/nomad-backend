@@ -3,10 +3,7 @@ package com.kancth.nomad.domain.user.entity;
 import com.kancth.nomad.domain.user.dto.SignUpRequest;
 import com.kancth.nomad.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -36,13 +33,13 @@ public class User extends BaseEntity {
     // 이메일 인증 여부
     private boolean verified;
 
-    public static User toEntity(SignUpRequest request) {
+    public static User toEntity(SignUpRequest request, String encodePassword) {
         return User.builder()
                 .email(request.email())
                 .name(request.name())
                 .nickname(request.nickname())
                 .loginId(request.loginId())
-                .password(request.password())
+                .password(encodePassword)
                 .verified(false)
                 .build();
     }
@@ -54,7 +51,6 @@ public class User extends BaseEntity {
                 .name(this.getName())
                 .nickname(this.getNickname())
                 .loginId(this.getLoginId())
-                .password(this.getPassword())
                 .verified(this.isVerified())
                 .createdAt(this.getCreatedAt())
                 .updatedAt(this.getUpdatedAt())
@@ -68,7 +64,6 @@ public class User extends BaseEntity {
             String name,
             String nickname,
             String loginId,
-            String password,
             boolean verified,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
