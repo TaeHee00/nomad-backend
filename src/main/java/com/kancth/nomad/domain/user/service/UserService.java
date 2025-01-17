@@ -3,6 +3,7 @@ package com.kancth.nomad.domain.user.service;
 import com.kancth.nomad.domain.user.dto.SignUpRequest;
 import com.kancth.nomad.domain.user.entity.User;
 import com.kancth.nomad.domain.user.exception.EmailAlreadyExistsException;
+import com.kancth.nomad.domain.user.exception.UserNotFoundException;
 import com.kancth.nomad.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,5 +36,10 @@ public class UserService {
         if (userRepository.existsByLoginId(loginId)) {
             throw new EmailAlreadyExistsException();
         }
+    }
+
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 }
