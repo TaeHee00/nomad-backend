@@ -1,23 +1,25 @@
 package com.kancth.nomad.domain.security.service;
 
 import com.kancth.nomad.domain.security.JwtProperties;
-import com.kancth.nomad.domain.security.RefreshTokenRepository;
-import com.kancth.nomad.domain.security.TokenNotFoundException;
+import com.kancth.nomad.domain.security.repository.RefreshTokenRepository;
+import com.kancth.nomad.domain.security.exception.ExpiredTokenException;
+import com.kancth.nomad.domain.security.exception.InvalidTokenException;
+import com.kancth.nomad.domain.security.exception.TokenNotFoundException;
 import com.kancth.nomad.domain.security.entity.AccessToken;
 import com.kancth.nomad.domain.security.entity.JwtResponse;
 import com.kancth.nomad.domain.security.entity.RefreshToken;
 import com.kancth.nomad.domain.user.entity.User;
 import com.kancth.nomad.domain.user.service.UserService;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 
 @RequiredArgsConstructor
 @Service
@@ -91,5 +93,26 @@ public class JwtService {
     private RefreshToken getRefreshTokenByUserId(Long userId) {
         return refreshTokenRepository.findByUserId(userId)
                 .orElseThrow(TokenNotFoundException::new);
+    }
+
+    public User getUser(String accessToken) {
+        Jws<Claims> claims = this.parseClaims(accessToken);
+        return userService.getUser(claims.getPayload().get("userId", Long.class));
+    }
+
+    private Jws<Claims> parseClaims(String token) {
+        Jws<Claims> claimsJws;
+        try {
+            claimsJws = Jwts.parser()
+                    .verifyWith((SecretKey) signingKey)
+                    .build()
+                    .parseSignedClaims(token);
+        } catch(ExpiredJwtException ex) {
+            throw new ExpiredTokenException();
+            //  return null; // 만료되었음
+        } catch(JwtException ex) {
+            throw new InvalidTokenException();
+        }
+        return claimsJws;
     }
 }
