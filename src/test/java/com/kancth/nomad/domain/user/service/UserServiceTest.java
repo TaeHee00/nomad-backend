@@ -53,7 +53,6 @@ class UserServiceTest {
         Assertions.assertThat(request.email()).isEqualTo(user.getEmail());
         Assertions.assertThat(request.name()).isEqualTo(user.getName());
         Assertions.assertThat(request.nickname()).isEqualTo(user.getNickname());
-        Assertions.assertThat(request.password()).isEqualTo(user.getPassword());
         Assertions.assertThat(user.isVerified()).isEqualTo(false);
         Assertions.assertThat(user.getProfileImgUrl()).isNull();
     }

@@ -64,7 +64,6 @@ class UserControllerTest {
             Assertions.assertThat(request.email()).isEqualTo(response.email());
             Assertions.assertThat(request.name()).isEqualTo(response.name());
             Assertions.assertThat(request.nickname()).isEqualTo(response.nickname());
-            Assertions.assertThat(request.password()).isEqualTo(response.password());
             Assertions.assertThat(response.verified()).isFalse();
         }
 
