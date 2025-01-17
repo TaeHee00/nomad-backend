@@ -1,4 +1,4 @@
-package com.kancth.nomad.domain.security;
+package com.kancth.nomad.domain.security.repository;
 
 import com.kancth.nomad.domain.security.entity.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
