@@ -39,7 +39,7 @@ public class AuthService {
         return jwt;
     }
 
-    private void addJwtCookie(JwtResponse jwt, HttpServletResponse response) {
+    public void addJwtCookie(JwtResponse jwt, HttpServletResponse response) {
         Cookie accessTokenCookie = new Cookie("accessToken", URLEncoder.encode(jwt.accessToken().token(), StandardCharsets.UTF_8));
         // TODO: FrontEnd 완성 이후 Domain 변경
         accessTokenCookie.setDomain("localhost");
@@ -61,7 +61,7 @@ public class AuthService {
         response.addCookie(refreshTokenCookie);
     }
 
-    private void passwordCheck(String rawPassword, String encodedPassword) {
+    public void passwordCheck(String rawPassword, String encodedPassword) {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new InvalidPasswordException();
         }
