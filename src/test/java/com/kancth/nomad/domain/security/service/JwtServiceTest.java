@@ -78,4 +78,31 @@ class JwtServiceTest {
         Assertions.assertThat(refreshToken.getUserId()).isEqualTo(findRefreshToken.getUserId());
     }
 
+    @DisplayName("Jwt 생성 Logic")
+    @Test
+    void createJwt() {
+        // Given
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .loginId("testId")
+                .email("testEmail@nomad.com")
+                .name("김철수")
+                .nickname("테스터")
+                .password("testPassword")
+                .build();
+        User user = userService.signUp(signUpRequest);
+
+        // When
+        JwtResponse jwt = jwtService.createJwt(user);
+        Jws<Claims> claims = jwtService.parseClaims(jwt.accessToken().token().replace("Bearer ", ""));
+        Long accessTokenUserId = claims.getPayload().get("userId", Long.class);
+
+
+
+        // Then
+        RefreshToken findRefreshToken = jwtService.getRefreshTokenByUserId(user.getId());
+        Assertions.assertThat(accessTokenUserId).isEqualTo(user.getId());
+        Assertions.assertThat(findRefreshToken.getRefreshToken()).isEqualTo(jwt.refreshToken().getRefreshToken());
+        Assertions.assertThat(findRefreshToken.getUserId()).isEqualTo(jwt.refreshToken().getUserId());
+        Assertions.assertThat(user.getId()).isEqualTo(accessTokenUserId);
+    }
 }
