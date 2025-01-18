@@ -2,6 +2,7 @@ package com.kancth.nomad.domain.user.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kancth.nomad.domain.security.enums.AuthType;
 import com.kancth.nomad.domain.user.dto.SignUpRequest;
 import com.kancth.nomad.domain.user.entity.User;
 import org.assertj.core.api.Assertions;
@@ -64,6 +65,7 @@ class UserControllerTest {
             Assertions.assertThat(request.email()).isEqualTo(response.email());
             Assertions.assertThat(request.name()).isEqualTo(response.name());
             Assertions.assertThat(request.nickname()).isEqualTo(response.nickname());
+            Assertions.assertThat(response.authType()).isEqualTo(AuthType.USER);
             Assertions.assertThat(response.verified()).isFalse();
         }
 
