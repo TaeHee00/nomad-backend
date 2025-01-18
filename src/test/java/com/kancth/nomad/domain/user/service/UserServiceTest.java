@@ -1,5 +1,6 @@
 package com.kancth.nomad.domain.user.service;
 
+import com.kancth.nomad.domain.security.enums.AuthType;
 import com.kancth.nomad.domain.user.dto.SignUpRequest;
 import com.kancth.nomad.domain.user.entity.User;
 import com.kancth.nomad.domain.user.repository.UserRepository;
@@ -53,6 +54,7 @@ class UserServiceTest {
         Assertions.assertThat(request.email()).isEqualTo(user.getEmail());
         Assertions.assertThat(request.name()).isEqualTo(user.getName());
         Assertions.assertThat(request.nickname()).isEqualTo(user.getNickname());
+        Assertions.assertThat(user.getAuthType()).isEqualTo(AuthType.USER);
         Assertions.assertThat(user.isVerified()).isEqualTo(false);
         Assertions.assertThat(user.getProfileImgUrl()).isNull();
     }
