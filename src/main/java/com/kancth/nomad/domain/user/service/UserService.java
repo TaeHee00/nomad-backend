@@ -38,8 +38,13 @@ public class UserService {
         }
     }
 
-    public User getUser(Long userId) {
+    public User getUserById(Long userId) {
         return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public User getUserByLoginId(String loginId) {
+        return userRepository.findByLoginId(loginId)
                 .orElseThrow(UserNotFoundException::new);
     }
 }
