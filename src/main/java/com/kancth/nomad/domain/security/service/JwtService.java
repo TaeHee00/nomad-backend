@@ -55,7 +55,7 @@ public class JwtService {
                 .build();
     }
 
-    private AccessToken genAccessToken(User user) {
+    public AccessToken genAccessToken(User user) {
         Date expiration = new Date(System.currentTimeMillis() + jwtProperties.getAccessTokenValiditySeconds());
         String token = ACCESS_PREFIX_STRING + Jwts.builder()
                 .subject(Long.toString(user.getId()))
@@ -70,7 +70,7 @@ public class JwtService {
                 .build();
     }
 
-    private RefreshToken genRefreshToken(User user, AccessToken accessToken) {
+    public RefreshToken genRefreshToken(User user, AccessToken accessToken) {
         Date expiration = new Date(System.currentTimeMillis() + jwtProperties.getRefreshTokenValiditySeconds());
 
         String refreshToken = Jwts.builder()
@@ -92,7 +92,7 @@ public class JwtService {
                 .build());
     }
 
-    private RefreshToken getRefreshTokenByUserId(Long userId) {
+    public RefreshToken getRefreshTokenByUserId(Long userId) {
         return refreshTokenRepository.findByUserId(userId)
                 .orElseThrow(TokenNotFoundException::new);
     }
@@ -102,7 +102,7 @@ public class JwtService {
         return userService.getUserById(claims.getPayload().get("userId", Long.class));
     }
 
-    private Jws<Claims> parseClaims(String token) {
+    public Jws<Claims> parseClaims(String token) {
         Jws<Claims> claimsJws;
         try {
             claimsJws = Jwts.parser()
