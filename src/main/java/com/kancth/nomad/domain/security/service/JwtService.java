@@ -82,7 +82,9 @@ public class JwtService {
                 .compact();
 
         // RefreshToken 생성 시 이전에 생성된 Refresh Token 폐기 처리
-        refreshTokenRepository.deleteByUserId(user.getId());
+        if (refreshTokenRepository.existsByUserId(user.getId())) {
+            refreshTokenRepository.deleteByUserId(user.getId());
+        }
 
         return refreshTokenRepository.save(RefreshToken.builder()
                 .userId(user.getId())
@@ -97,7 +99,7 @@ public class JwtService {
 
     public User getUser(String accessToken) {
         Jws<Claims> claims = this.parseClaims(accessToken);
-        return userService.getUser(claims.getPayload().get("userId", Long.class));
+        return userService.getUserById(claims.getPayload().get("userId", Long.class));
     }
 
     private Jws<Claims> parseClaims(String token) {
