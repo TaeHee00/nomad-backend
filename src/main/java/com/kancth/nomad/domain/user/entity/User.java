@@ -29,6 +29,7 @@ public class User extends BaseEntity {
     private String loginId;
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private AuthType authType;
 
     // 프로필 이미지 url
